@@ -1,0 +1,1765 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Polomes Academy — Move. Train. Live.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #E8C97A;
+      --gold-dim: rgba(201,168,76,0.15);
+      --bg: #080808;
+      --bg2: #0f0f0f;
+      --bg3: #161616;
+      --white: #ffffff;
+      --grey: #8a8a8a;
+      --grey-light: #c4c4c4;
+      --border: rgba(255,255,255,0.07);
+      --radius: 16px;
+      --font-head: 'Montserrat', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+    ::selection { background: var(--gold); color: #000; }
+
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+    /* ===== UTILITIES ===== */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .gold { color: var(--gold); }
+    .gradient-text {
+      background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 50%, #a07830 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .section-label {
+      font-family: var(--font-head);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+      display: block;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 32px;
+      border-radius: 100px;
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+    }
+    .btn-gold {
+      background: linear-gradient(135deg, var(--gold-light), var(--gold));
+      color: #000;
+    }
+    .btn-gold:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 20px 40px rgba(201,168,76,0.4);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      border: 1.5px solid rgba(255,255,255,0.3);
+    }
+    .btn-outline:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      transform: translateY(-2px);
+    }
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===== NOISE OVERLAY ===== */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.4;
+    }
+
+    /* ===== NAVBAR ===== */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 20px 0;
+      transition: all 0.4s ease;
+    }
+    nav.scrolled {
+      background: rgba(8,8,8,0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-family: var(--font-head);
+      font-weight: 900;
+      font-size: 22px;
+      letter-spacing: -0.5px;
+      text-decoration: none;
+      color: var(--white);
+    }
+    .logo span { color: var(--gold); }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--grey-light);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-cta { display: flex; align-items: center; gap: 12px; }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 8px;
+      margin: -8px;
+      min-width: 44px;
+      min-height: 44px;
+      align-items: center;
+      justify-content: center;
+    }
+    .hamburger span {
+      width: 24px; height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    /* ===== HERO ===== */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding: 120px 0 80px;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 60% 40%, rgba(201,168,76,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 20% 80%, rgba(201,168,76,0.05) 0%, transparent 50%),
+        linear-gradient(180deg, #080808 0%, #0d0d0d 100%);
+    }
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 80%);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 860px;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 32px;
+      background: rgba(201,168,76,0.05);
+    }
+    .hero-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+    .hero-title {
+      font-family: var(--font-head);
+      font-size: clamp(52px, 8vw, 96px);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -3px;
+      margin-bottom: 28px;
+    }
+    .hero-title .line2 {
+      display: block;
+      margin-top: 8px;
+    }
+    .hero-sub {
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--grey-light);
+      max-width: 520px;
+      margin-bottom: 48px;
+      line-height: 1.7;
+    }
+    .hero-sub strong { color: var(--white); font-weight: 600; }
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 64px;
+    }
+    .hero-stats {
+      display: flex;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+    .stat {
+      display: flex;
+      flex-direction: column;
+    }
+    .stat-num {
+      font-family: var(--font-head);
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 12px;
+      color: var(--grey);
+      letter-spacing: 1px;
+      margin-top: 4px;
+    }
+    .stat-divider {
+      width: 1px;
+      background: var(--border);
+      height: 40px;
+      align-self: center;
+    }
+    .scroll-indicator {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      z-index: 2;
+      color: var(--grey);
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 48px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: scrollLine 2s ease-in-out infinite;
+    }
+    @keyframes scrollLine {
+      0% { opacity: 0; transform: scaleY(0); transform-origin: top; }
+      50% { opacity: 1; transform: scaleY(1); transform-origin: top; }
+      100% { opacity: 0; transform: scaleY(1); transform-origin: bottom; }
+    }
+
+    /* ===== CONCEPT STRIP ===== */
+    #concept-strip {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg2);
+      padding: 24px 0;
+      overflow: hidden;
+    }
+    .strip-track {
+      display: flex;
+      gap: 64px;
+      animation: marquee 20s linear infinite;
+      white-space: nowrap;
+    }
+    .strip-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--grey);
+      flex-shrink: 0;
+    }
+    .strip-dot {
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ===== CONCEPT SECTION ===== */
+    #concept {
+      padding: 120px 0;
+    }
+    .concept-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .concept-text h2 {
+      font-family: var(--font-head);
+      font-size: clamp(36px, 4vw, 52px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      margin-bottom: 24px;
+    }
+    .concept-text p {
+      color: var(--grey-light);
+      font-size: 16px;
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+    .concept-features {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 36px;
+    }
+    .concept-feature {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 20px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .concept-feature:hover {
+      border-color: rgba(201,168,76,0.3);
+      background: var(--gold-dim);
+    }
+    .feat-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      background: var(--gold-dim);
+      border: 1px solid rgba(201,168,76,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .feat-text h4 {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+    .feat-text p {
+      font-size: 13px;
+      color: var(--grey);
+      line-height: 1.5;
+      margin: 0;
+    }
+    .concept-visual {
+      position: relative;
+    }
+    .big-number {
+      font-family: var(--font-head);
+      font-size: 200px;
+      font-weight: 900;
+      letter-spacing: -8px;
+      line-height: 1;
+      background: linear-gradient(180deg, rgba(201,168,76,0.15) 0%, transparent 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      user-select: none;
+      text-align: center;
+    }
+    .concept-card-stack {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 12px;
+      padding: 0 20px;
+    }
+    .mini-card {
+      padding: 16px 20px;
+      background: rgba(15,15,15,0.9);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .mini-card-icon {
+      font-size: 22px;
+    }
+    .mini-card-info {
+      flex: 1;
+    }
+    .mini-card-info h5 {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 13px;
+    }
+    .mini-card-info span {
+      font-size: 11px;
+      color: var(--grey);
+    }
+    .mini-card-badge {
+      font-family: var(--font-head);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 100px;
+      background: var(--gold-dim);
+      border: 1px solid rgba(201,168,76,0.2);
+      color: var(--gold);
+    }
+
+    /* ===== MODALIDADES ===== */
+    #modalidades {
+      padding: 120px 0;
+      background: var(--bg2);
+      position: relative;
+      overflow: hidden;
+    }
+    #modalidades::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%; transform: translateX(-50%);
+      width: 600px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+    .section-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+    .section-header h2 {
+      font-family: var(--font-head);
+      font-size: clamp(36px, 4vw, 52px);
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      margin-bottom: 16px;
+    }
+    .section-header p {
+      font-size: 16px;
+      color: var(--grey-light);
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    .sports-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      overflow: hidden;
+    }
+    .sport-card {
+      background: var(--bg);
+      padding: 36px 28px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+      cursor: default;
+    }
+    .sport-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--gold-dim);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .sport-card:hover { background: var(--bg2); }
+    .sport-card:hover::after { opacity: 1; }
+    .sport-card:hover .sport-icon { transform: scale(1.1) rotate(-5deg); }
+    .sport-icon {
+      font-size: 40px;
+      margin-bottom: 16px;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+    .sport-name {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 18px;
+      margin-bottom: 8px;
+      position: relative;
+      z-index: 1;
+    }
+    .sport-desc {
+      font-size: 13px;
+      color: var(--grey);
+      line-height: 1.6;
+      position: relative;
+      z-index: 1;
+    }
+    .sport-tag {
+      display: inline-block;
+      margin-top: 12px;
+      font-family: var(--font-head);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      position: relative;
+      z-index: 1;
+    }
+    .sport-count {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-family: var(--font-head);
+      font-size: 11px;
+      font-weight: 700;
+      color: rgba(201,168,76,0.3);
+      letter-spacing: 1px;
+    }
+    /* Wide card spans 2 columns */
+    .sport-card.wide {
+      grid-column: span 2;
+    }
+    .sport-card.wide .sport-icon { font-size: 52px; }
+    .sport-card.wide .sport-name { font-size: 24px; }
+
+    /* ===== HOW IT WORKS ===== */
+    #como-funciona {
+      padding: 120px 0;
+    }
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin-top: 64px;
+    }
+    .step {
+      text-align: center;
+      padding: 48px 32px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      position: relative;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .step:hover {
+      border-color: rgba(201,168,76,0.3);
+      transform: translateY(-8px);
+    }
+    .step-num {
+      position: absolute;
+      top: -18px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold-light), var(--gold));
+      color: #000;
+      font-family: var(--font-head);
+      font-weight: 900;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .step-icon {
+      font-size: 52px;
+      margin-bottom: 20px;
+    }
+    .step h3 {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 22px;
+      margin-bottom: 12px;
+    }
+    .step p {
+      font-size: 14px;
+      color: var(--grey-light);
+      line-height: 1.7;
+    }
+    .steps-connector {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-top: 64px;
+    }
+    .connector-line {
+      height: 2px;
+      flex: 1;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0.3;
+    }
+
+    /* ===== PRICING ===== */
+    #planos {
+      padding: 120px 0;
+      background: var(--bg2);
+      position: relative;
+      overflow: hidden;
+    }
+    #planos::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 600px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 64px;
+    }
+    .plan-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 40px 32px;
+      position: relative;
+      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+    }
+    .plan-card:hover {
+      transform: translateY(-8px);
+    }
+    .plan-card.featured {
+      border-color: var(--gold);
+      background: linear-gradient(135deg, rgba(201,168,76,0.05) 0%, var(--bg) 60%);
+      box-shadow: 0 0 60px rgba(201,168,76,0.12);
+    }
+    .plan-card.featured:hover {
+      box-shadow: 0 20px 80px rgba(201,168,76,0.2);
+    }
+    .plan-popular {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, var(--gold-light), var(--gold));
+      color: #000;
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 6px 20px;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+    .plan-name {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 14px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--grey);
+      margin-bottom: 8px;
+    }
+    .plan-card.featured .plan-name { color: var(--gold); }
+    .plan-price {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      margin: 20px 0;
+    }
+    .plan-currency {
+      font-family: var(--font-head);
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--grey);
+    }
+    .plan-amount {
+      font-family: var(--font-head);
+      font-size: 56px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -2px;
+    }
+    .plan-period {
+      font-size: 14px;
+      color: var(--grey);
+      align-self: flex-end;
+      margin-bottom: 6px;
+    }
+    .plan-desc {
+      font-size: 13px;
+      color: var(--grey);
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+    .plan-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+    .plan-features li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--grey-light);
+    }
+    .plan-features li .check {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--gold-dim);
+      border: 1px solid rgba(201,168,76,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      flex-shrink: 0;
+      color: var(--gold);
+    }
+    .plan-features li.muted { opacity: 0.4; }
+    .plan-features li.muted .check { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); color: var(--grey); }
+    .plan-btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    /* ===== GALLERY ===== */
+    #galeria {
+      padding: 120px 0;
+      overflow: hidden;
+    }
+    .gallery-intro {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 48px;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .gallery-intro h2 {
+      font-family: var(--font-head);
+      font-size: clamp(32px, 4vw, 48px);
+      font-weight: 800;
+      letter-spacing: -1.5px;
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: auto auto;
+      gap: 12px;
+    }
+    .gallery-item {
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 8px;
+      transition: transform 0.3s;
+      cursor: pointer;
+    }
+    .gallery-item:hover { transform: scale(1.02); }
+    .gallery-item.tall { grid-row: span 2; aspect-ratio: auto; min-height: 320px; }
+    .gallery-item.wide { grid-column: span 2; aspect-ratio: 2/1; }
+    .gallery-item .ph-label {
+      font-family: var(--font-head);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--grey);
+      z-index: 1;
+    }
+    .gallery-item .ph-icon2 {
+      font-size: 32px;
+      opacity: 0.2;
+      z-index: 1;
+    }
+    .gallery-item::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(201,168,76,0.03) 0%, transparent 60%);
+    }
+    .gallery-item.tall { background: linear-gradient(180deg, #111 0%, #0d0d0d 100%); }
+    .gallery-item.wide { background: linear-gradient(90deg, #111 0%, #0d0d0d 100%); }
+    .ig-handle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--grey);
+      font-size: 14px;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .ig-handle:hover { color: var(--gold); }
+
+    /* ===== LOCATION ===== */
+    #localizacao {
+      padding: 120px 0;
+      background: var(--bg2);
+    }
+    .location-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+    .location-text h2 {
+      font-family: var(--font-head);
+      font-size: clamp(32px, 3.5vw, 48px);
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      margin-bottom: 20px;
+    }
+    .location-text p {
+      color: var(--grey-light);
+      font-size: 16px;
+      line-height: 1.8;
+      margin-bottom: 32px;
+    }
+    .contact-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      list-style: none;
+      margin-bottom: 36px;
+    }
+    .contact-list li {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 14px;
+      color: var(--grey-light);
+    }
+    .contact-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: var(--gold-dim);
+      border: 1px solid rgba(201,168,76,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .map-placeholder {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    .map-placeholder::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(201,168,76,0.04) 40px),
+        repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(201,168,76,0.04) 40px);
+    }
+    .map-pin {
+      font-size: 48px;
+      position: relative;
+      z-index: 1;
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    .map-placeholder span {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 16px;
+      position: relative;
+      z-index: 1;
+    }
+    .map-placeholder small {
+      font-size: 12px;
+      color: var(--grey);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ===== CTA SECTION ===== */
+    #cta {
+      padding: 120px 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    #cta::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 800px; height: 400px;
+      background: radial-gradient(ellipse, rgba(201,168,76,0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    #cta h2 {
+      font-family: var(--font-head);
+      font-size: clamp(40px, 6vw, 72px);
+      font-weight: 900;
+      letter-spacing: -2.5px;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+    #cta p {
+      font-size: 18px;
+      color: var(--grey-light);
+      max-width: 480px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+    #cta .cta-actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #050505;
+      border-top: 1px solid var(--border);
+      padding: 64px 0 32px;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+    .footer-brand p {
+      font-size: 14px;
+      color: var(--grey);
+      line-height: 1.7;
+      margin-top: 16px;
+      max-width: 280px;
+    }
+    .footer-col h4 {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--grey);
+      margin-bottom: 20px;
+    }
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .footer-col ul a {
+      text-decoration: none;
+      font-size: 14px;
+      color: var(--grey-light);
+      transition: color 0.2s;
+    }
+    .footer-col ul a:hover { color: var(--gold); }
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-bottom p {
+      font-size: 13px;
+      color: var(--grey);
+    }
+    .social-links {
+      display: flex;
+      gap: 12px;
+    }
+    .social-link {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .social-link:hover {
+      border-color: var(--gold);
+      background: var(--gold-dim);
+      transform: translateY(-2px);
+    }
+
+    /* ===== MOBILE NAV MENU ===== */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(8,8,8,0.98);
+      backdrop-filter: blur(20px);
+      z-index: 999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: var(--font-head);
+      font-size: clamp(24px, 8vw, 36px);
+      font-weight: 800;
+      text-decoration: none;
+      color: var(--white);
+      letter-spacing: -1px;
+      transition: color 0.2s;
+      padding: 8px 0;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+    }
+    .mobile-menu a:hover { color: var(--gold); }
+    .mobile-close {
+      position: absolute;
+      top: 20px; right: 20px;
+      font-size: 28px;
+      cursor: pointer;
+      color: var(--grey);
+      background: none;
+      border: none;
+      min-width: 44px;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1200px) {
+      .hero-content { max-width: 100%; }
+      .concept-grid { grid-template-columns: 1fr; gap: 48px; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      /* Nav */
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: flex; }
+
+      /* Sections — reduce vertical padding for mobile */
+      #concept, #como-funciona, #galeria, #cta { padding: 72px 0; }
+      #modalidades, #planos, #localizacao { padding: 72px 0; }
+
+      /* Hero */
+      #hero { padding: 110px 0 72px; align-items: flex-start; }
+      .hero-title { letter-spacing: -2px; margin-bottom: 20px; }
+      .hero-sub { font-size: 16px; margin-bottom: 36px; }
+      .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        margin-bottom: 48px;
+      }
+      .hero-actions .btn { width: 100%; justify-content: center; }
+      .hero-stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px 16px;
+      }
+      .stat-divider { display: none; }
+      .stat-num { font-size: 28px; }
+
+      /* Concept */
+      .concept-visual { display: none; }
+
+      /* Modalidades */
+      .sports-grid { grid-template-columns: 1fr; }
+      .sport-card.wide { grid-column: span 1; }
+      .sport-card.wide .sport-icon { font-size: 40px; }
+      .sport-card.wide .sport-name { font-size: 18px; }
+
+      /* Steps */
+      .steps-grid { grid-template-columns: 1fr; gap: 24px; }
+      .step { padding: 40px 24px; }
+
+      /* Pricing */
+      .pricing-grid { grid-template-columns: 1fr; gap: 20px; }
+      .plan-amount { font-size: 48px; }
+
+      /* Gallery */
+      .gallery-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .gallery-item.tall { grid-row: span 1; aspect-ratio: 1; }
+      .gallery-item.wide { grid-column: span 2; aspect-ratio: 2/1; }
+
+      /* Location */
+      .location-grid { grid-template-columns: 1fr; gap: 40px; }
+
+      /* Footer */
+      .footer-top { grid-template-columns: 1fr; gap: 32px; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+
+      /* CTA */
+      #cta .cta-actions { flex-direction: column; align-items: stretch; }
+      #cta .cta-actions .btn { justify-content: center; }
+
+      /* Section header */
+      .section-header { margin-bottom: 40px; }
+    }
+
+    @media (max-width: 480px) {
+      /* Container padding */
+      .container { padding: 0 16px; }
+
+      /* Hero */
+      #hero { padding: 100px 0 64px; }
+      .hero-badge { font-size: 10px; letter-spacing: 1.5px; padding: 7px 14px; }
+      .hero-sub { font-size: 15px; }
+      .hero-stats { grid-template-columns: repeat(2, 1fr); }
+
+      /* Sports */
+      .sports-grid { grid-template-columns: 1fr; }
+      .sport-card { padding: 28px 20px; }
+
+      /* Gallery — single column on very small screens */
+      .gallery-grid { grid-template-columns: 1fr; }
+      .gallery-item.wide, .gallery-item.tall { grid-column: span 1; aspect-ratio: 4/3; }
+
+      /* Plans */
+      .plan-card { padding: 32px 24px; }
+
+      /* Steps */
+      .step { padding: 36px 20px; }
+      .step h3 { font-size: 18px; }
+
+      /* Buttons — full width on small phones */
+      .btn { padding: 13px 24px; font-size: 12px; }
+
+      /* Footer */
+      .footer-bottom p { font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav id="navbar">
+    <div class="container">
+      <div class="nav-inner">
+        <a href="#" class="logo">POLOMES<span>.</span></a>
+        <ul class="nav-links">
+          <li><a href="#concept">Conceito</a></li>
+          <li><a href="#modalidades">Modalidades</a></li>
+          <li><a href="#como-funciona">Como Funciona</a></li>
+          <li><a href="#planos">Planos</a></li>
+          <li><a href="#localizacao">Localização</a></li>
+        </ul>
+        <div class="nav-cta">
+          <a href="#planos" class="btn btn-gold" style="padding:10px 24px; font-size:12px;">Começar Agora</a>
+        </div>
+        <div class="hamburger" onclick="toggleMenu()">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-close" onclick="toggleMenu()">✕</button>
+    <a href="#concept" onclick="toggleMenu()">Conceito</a>
+    <a href="#modalidades" onclick="toggleMenu()">Modalidades</a>
+    <a href="#como-funciona" onclick="toggleMenu()">Como Funciona</a>
+    <a href="#planos" onclick="toggleMenu()">Planos</a>
+    <a href="#localizacao" onclick="toggleMenu()">Localização</a>
+    <a href="#planos" class="btn btn-gold" onclick="toggleMenu()">Começar Agora</a>
+  </div>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge">Torres Vedras — Abertura em Breve</div>
+        <h1 class="hero-title">
+          <span class="gradient-text">Move.</span>
+          <span class="line2">Train. <span style="color:var(--grey-light);">Live.</span></span>
+        </h1>
+        <p class="hero-sub">
+          A academia mais <strong>moderna e versátil</strong> de Torres Vedras.
+          Uma mensalidade. Acesso a todos os desportos e serviços.
+          Reserva. Aparece. Supera-te.
+        </p>
+        <div class="hero-actions">
+          <a href="#planos" class="btn btn-gold">Ver Planos &rarr;</a>
+          <a href="#modalidades" class="btn btn-outline">Explorar Modalidades</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="stat-num gradient-text">3</span>
+            <span class="stat-label">Campos de Padel</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <span class="stat-num gradient-text">8+</span>
+            <span class="stat-label">Modalidades</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <span class="stat-num gradient-text">1</span>
+            <span class="stat-label">Mensalidade</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <span class="stat-num gradient-text">∞</span>
+            <span class="stat-label">Possibilidades</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- STRIP -->
+  <div id="concept-strip">
+    <div class="strip-track">
+      <div class="strip-item"><div class="strip-dot"></div>Padel</div>
+      <div class="strip-item"><div class="strip-dot"></div>Bouldering</div>
+      <div class="strip-item"><div class="strip-dot"></div>Pilates</div>
+      <div class="strip-item"><div class="strip-dot"></div>Hyrox</div>
+      <div class="strip-item"><div class="strip-dot"></div>Fisioterapia</div>
+      <div class="strip-item"><div class="strip-dot"></div>Nutrição</div>
+      <div class="strip-item"><div class="strip-dot"></div>Bar & Social</div>
+      <div class="strip-item"><div class="strip-dot"></div>Cowork</div>
+      <div class="strip-item"><div class="strip-dot"></div>Torres Vedras</div>
+      <!-- Duplicate for seamless loop -->
+      <div class="strip-item"><div class="strip-dot"></div>Padel</div>
+      <div class="strip-item"><div class="strip-dot"></div>Bouldering</div>
+      <div class="strip-item"><div class="strip-dot"></div>Pilates</div>
+      <div class="strip-item"><div class="strip-dot"></div>Hyrox</div>
+      <div class="strip-item"><div class="strip-dot"></div>Fisioterapia</div>
+      <div class="strip-item"><div class="strip-dot"></div>Nutrição</div>
+      <div class="strip-item"><div class="strip-dot"></div>Bar & Social</div>
+      <div class="strip-item"><div class="strip-dot"></div>Cowork</div>
+      <div class="strip-item"><div class="strip-dot"></div>Torres Vedras</div>
+    </div>
+  </div>
+
+  <!-- CONCEPT -->
+  <section id="concept">
+    <div class="container">
+      <div class="concept-grid">
+        <div class="concept-text fade-in">
+          <span class="section-label">O Conceito</span>
+          <h2>Um clube. <span class="gradient-text">Tudo incluído.</span></h2>
+          <p>A Polomes Academy nasceu com uma visão simples mas revolucionária: acabar com a ideia de pagar por uma única modalidade. Inspirados no modelo do Urban Sports Club, criámos um espaço onde uma mensalidade desbloqueia acesso a <strong style="color:var(--white)">tudo</strong>.</p>
+          <p>Padel hoje, Bouldering amanhã, Pilates na sexta. <span style="color:var(--gold)">A escolha é tua.</span></p>
+          <div class="concept-features">
+            <div class="concept-feature">
+              <div class="feat-icon">📅</div>
+              <div class="feat-text">
+                <h4>Reserva Simples</h4>
+                <p>Agenda qualquer sessão com 1 clique, a qualquer hora, diretamente na app.</p>
+              </div>
+            </div>
+            <div class="concept-feature">
+              <div class="feat-icon">🔄</div>
+              <div class="feat-text">
+                <h4>Variedade Total</h4>
+                <p>Experimenta todas as modalidades sem custos extra. Muda quando quiseres.</p>
+              </div>
+            </div>
+            <div class="concept-feature">
+              <div class="feat-icon">⭐</div>
+              <div class="feat-text">
+                <h4>Espaço Premium</h4>
+                <p>Instalações de alto nível desenhadas para inspirar e elevar o teu treino.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="concept-visual fade-in">
+          <div class="big-number">∞</div>
+          <div class="concept-card-stack">
+            <div class="mini-card">
+              <div class="mini-card-icon">🎾</div>
+              <div class="mini-card-info">
+                <h5>Padel — Campo 2</h5>
+                <span>Hoje, 19:00 → 20:00</span>
+              </div>
+              <span class="mini-card-badge">Reservado</span>
+            </div>
+            <div class="mini-card" style="border-color: rgba(201,168,76,0.2); background: rgba(201,168,76,0.04)">
+              <div class="mini-card-icon">🧗</div>
+              <div class="mini-card-info">
+                <h5>Bouldering</h5>
+                <span>Amanhã, 10:00</span>
+              </div>
+              <span class="mini-card-badge">Disponível</span>
+            </div>
+            <div class="mini-card">
+              <div class="mini-card-icon">🧘</div>
+              <div class="mini-card-info">
+                <h5>Pilates — Turma A</h5>
+                <span>Sexta, 09:30</span>
+              </div>
+              <span class="mini-card-badge">Disponível</span>
+            </div>
+            <div class="mini-card">
+              <div class="mini-card-icon">💪</div>
+              <div class="mini-card-info">
+                <h5>Hyrox Training</h5>
+                <span>Sábado, 08:00</span>
+              </div>
+              <span class="mini-card-badge">Disponível</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODALIDADES -->
+  <section id="modalidades">
+    <div class="container">
+      <div class="section-header fade-in">
+        <span class="section-label">O Que Oferecemos</span>
+        <h2>Tudo num só lugar.</h2>
+        <p>Do desporto de alta intensidade à recuperação e bem-estar — temos tudo o que precisas.</p>
+      </div>
+      <div class="sports-grid fade-in">
+        <div class="sport-card wide">
+          <span class="sport-count">×3</span>
+          <span class="sport-icon">🎾</span>
+          <div class="sport-name">Padel</div>
+          <div class="sport-desc">Três campos cobertos de alto desempenho com piso de qualidade profissional. Para todos os níveis, do iniciante ao competidor.</div>
+          <span class="sport-tag">3 Campos · Indoor</span>
+        </div>
+        <div class="sport-card">
+          <span class="sport-icon">🧗</span>
+          <div class="sport-name">Bouldering</div>
+          <div class="sport-desc">Parede de escalada indoor com problemas para todos os níveis. Força, técnica e adrenalina.</div>
+          <span class="sport-tag">Parede Completa</span>
+        </div>
+        <div class="sport-card">
+          <span class="sport-icon">🧘</span>
+          <div class="sport-name">Pilates</div>
+          <div class="sport-desc">Sala equipada com camas e aparelhos de Pilates. Aulas em grupo e sessões individuais com instrutores certificados.</div>
+          <span class="sport-tag">Sala Dedicada</span>
+        </div>
+        <div class="sport-card">
+          <span class="sport-icon">💪</span>
+          <div class="sport-name">Hyrox</div>
+          <div class="sport-desc">A nova modalidade fitness que está a conquistar o mundo. Treino funcional de alta intensidade para te preparar para a competição.</div>
+          <span class="sport-tag">Sala Hyrox</span>
+        </div>
+        <div class="sport-card">
+          <span class="sport-icon">🩺</span>
+          <div class="sport-name">Fisioterapia</div>
+          <div class="sport-desc">Dois gabinetes com fisioterapeutas especializados em desporto. Recuperação, prevenção e otimização do teu desempenho.</div>
+          <span class="sport-tag">2 Gabinetes</span>
+        </div>
+        <div class="sport-card">
+          <span class="sport-icon">🥗</span>
+          <div class="sport-name">Nutrição</div>
+          <div class="sport-desc">Acompanhamento nutricional personalizado para potenciar os teus resultados desportivos e bem-estar geral.</div>
+          <span class="sport-tag">1 Gabinete</span>
+        </div>
+        <div class="sport-card">
+          <span class="sport-icon">☕</span>
+          <div class="sport-name">Bar & Social</div>
+          <div class="sport-desc">Espaço de convívio moderno com snacks saudáveis, smoothies e opções para repor energia após o treino.</div>
+          <span class="sport-tag">Em Breve</span>
+        </div>
+        <div class="sport-card">
+          <span class="sport-icon">💻</span>
+          <div class="sport-name">Cowork</div>
+          <div class="sport-desc">Espaço de trabalho flexível, silencioso e inspirador. Treina de manhã, trabalha de tarde — sem sair do clube.</div>
+          <span class="sport-tag">Em Breve</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="como-funciona">
+    <div class="container">
+      <div class="section-header fade-in">
+        <span class="section-label">Como Funciona</span>
+        <h2>Simples como deve ser.</h2>
+        <p>Três passos para teres acesso a um clube completo, moderno e sem complicações.</p>
+      </div>
+      <div class="steps-grid">
+        <div class="step fade-in">
+          <div class="step-num">1</div>
+          <div class="step-icon">📱</div>
+          <h3>Escolhe o teu plano</h3>
+          <p>Seleciona a mensalidade que melhor se adapta ao teu ritmo de vida. Sem contratos longos, sem letras pequenas.</p>
+        </div>
+        <div class="step fade-in" style="transition-delay: 0.15s">
+          <div class="step-num">2</div>
+          <div class="step-icon">📅</div>
+          <h3>Reserva a tua sessão</h3>
+          <p>Pela app ou no site, reserva qualquer modalidade disponível com apenas alguns cliques, quando quiseres.</p>
+        </div>
+        <div class="step fade-in" style="transition-delay: 0.3s">
+          <div class="step-num">3</div>
+          <div class="step-icon">🚀</div>
+          <h3>Aparece e supera-te</h3>
+          <p>Chega ao clube, faz check-in com o teu QR Code e desfruta de instalações premium como nunca antes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="planos">
+    <div class="container">
+      <div class="section-header fade-in">
+        <span class="section-label">Planos & Preços</span>
+        <h2>Investe no teu <span class="gradient-text">bem-estar.</span></h2>
+        <p>Preços de lançamento especiais para os primeiros membros da Polomes Academy.</p>
+      </div>
+      <div class="pricing-grid">
+        <!-- STARTER -->
+        <div class="plan-card fade-in">
+          <div class="plan-name">Starter</div>
+          <div class="plan-price">
+            <span class="plan-currency">€</span>
+            <span class="plan-amount">39</span>
+            <span class="plan-period">/mês</span>
+          </div>
+          <p class="plan-desc">Ideal para começar e experimentar o conceito Polomes.</p>
+          <ul class="plan-features">
+            <li><span class="check">✓</span> 8 reservas por mês</li>
+            <li><span class="check">✓</span> Acesso a todas as modalidades</li>
+            <li><span class="check">✓</span> App de reservas</li>
+            <li><span class="check">✓</span> Acesso ao Bar</li>
+            <li class="muted"><span class="check">—</span> Fisioterapia incluída</li>
+            <li class="muted"><span class="check">—</span> Consulta de Nutrição</li>
+            <li class="muted"><span class="check">—</span> Cowork ilimitado</li>
+          </ul>
+          <a href="#" class="btn btn-outline plan-btn">Escolher Starter</a>
+        </div>
+        <!-- PRO -->
+        <div class="plan-card featured fade-in" style="transition-delay: 0.1s">
+          <div class="plan-popular">⭐ Mais Popular</div>
+          <div class="plan-name">Pro</div>
+          <div class="plan-price">
+            <span class="plan-currency">€</span>
+            <span class="plan-amount gradient-text">69</span>
+            <span class="plan-period">/mês</span>
+          </div>
+          <p class="plan-desc">A escolha mais completa para quem treina com regularidade.</p>
+          <ul class="plan-features">
+            <li><span class="check">✓</span> Reservas ilimitadas</li>
+            <li><span class="check">✓</span> Acesso a todas as modalidades</li>
+            <li><span class="check">✓</span> App de reservas</li>
+            <li><span class="check">✓</span> Acesso ao Bar</li>
+            <li><span class="check">✓</span> 1 sessão de Fisioterapia/mês</li>
+            <li><span class="check">✓</span> 1 consulta de Nutrição/mês</li>
+            <li><span class="check">✓</span> Cowork ilimitado</li>
+          </ul>
+          <a href="#" class="btn btn-gold plan-btn">Escolher Pro</a>
+        </div>
+        <!-- ELITE -->
+        <div class="plan-card fade-in" style="transition-delay: 0.2s">
+          <div class="plan-name">Elite</div>
+          <div class="plan-price">
+            <span class="plan-currency">€</span>
+            <span class="plan-amount">99</span>
+            <span class="plan-period">/mês</span>
+          </div>
+          <p class="plan-desc">Para atletas e profissionais que exigem o máximo da academia.</p>
+          <ul class="plan-features">
+            <li><span class="check">✓</span> Reservas ilimitadas + prioritárias</li>
+            <li><span class="check">✓</span> Acesso a todas as modalidades</li>
+            <li><span class="check">✓</span> App de reservas</li>
+            <li><span class="check">✓</span> Bar com desconto 15%</li>
+            <li><span class="check">✓</span> 2 sessões de Fisioterapia/mês</li>
+            <li><span class="check">✓</span> 2 consultas de Nutrição/mês</li>
+            <li><span class="check">✓</span> Cowork ilimitado + sala privada</li>
+          </ul>
+          <a href="#" class="btn btn-outline plan-btn">Escolher Elite</a>
+        </div>
+      </div>
+      <p style="text-align:center; margin-top: 32px; font-size: 13px; color: var(--grey);">
+        Todos os planos com cancelamento a qualquer momento · Sem taxa de inscrição durante o lançamento
+      </p>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="galeria">
+    <div class="container">
+      <div class="gallery-intro fade-in">
+        <div>
+          <span class="section-label">Espaço & Ambiente</span>
+          <h2>Feito para ser <span class="gradient-text">partilhado.</span></h2>
+        </div>
+        <a href="#" class="ig-handle">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          @polomes.academy
+        </a>
+      </div>
+      <div class="gallery-grid fade-in">
+        <div class="gallery-item tall">
+          <span class="ph-icon2">🎾</span>
+          <span class="ph-label">Campos de Padel</span>
+        </div>
+        <div class="gallery-item">
+          <span class="ph-icon2">🧗</span>
+          <span class="ph-label">Bouldering</span>
+        </div>
+        <div class="gallery-item">
+          <span class="ph-icon2">💪</span>
+          <span class="ph-label">Sala Hyrox</span>
+        </div>
+        <div class="gallery-item wide" style="grid-column: span 2;">
+          <span class="ph-icon2">☕</span>
+          <span class="ph-label">Bar & Convívio</span>
+        </div>
+        <div class="gallery-item">
+          <span class="ph-icon2">🧘</span>
+          <span class="ph-label">Studio Pilates</span>
+        </div>
+        <div class="gallery-item">
+          <span class="ph-icon2">💻</span>
+          <span class="ph-label">Espaço Cowork</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOCATION -->
+  <section id="localizacao">
+    <div class="container">
+      <div class="location-grid">
+        <div class="location-text fade-in">
+          <span class="section-label">Localização</span>
+          <h2>No coração de <span class="gradient-text">Torres Vedras.</span></h2>
+          <p>Instalações modernas, acessíveis e com estacionamento gratuito. A Polomes Academy está onde tu estás.</p>
+          <ul class="contact-list">
+            <li>
+              <div class="contact-icon">📍</div>
+              <span>Torres Vedras, Portugal <br><small style="color:var(--grey);">Morada completa em breve</small></span>
+            </li>
+            <li>
+              <div class="contact-icon">🕐</div>
+              <span>Segunda a Sexta: 06:30 — 22:30<br>Fins de Semana: 08:00 — 20:00</span>
+            </li>
+            <li>
+              <div class="contact-icon">📧</div>
+              <span>info@polomes.academy</span>
+            </li>
+            <li>
+              <div class="contact-icon">📱</div>
+              <span>+351 XXX XXX XXX</span>
+            </li>
+          </ul>
+          <a href="#planos" class="btn btn-gold">Reservar Visita &rarr;</a>
+        </div>
+        <div class="fade-in" style="transition-delay: 0.2s">
+          <div class="map-placeholder">
+            <div class="map-pin">📍</div>
+            <span>Torres Vedras</span>
+            <small>Polomes Academy</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="cta">
+    <div class="container">
+      <span class="section-label" style="display:block; text-align:center; margin-bottom:20px;">Faz Parte do Movimento</span>
+      <h2 class="fade-in">Pronto para <span class="gradient-text">começar?</span></h2>
+      <p class="fade-in">Junta-te aos primeiros membros da Polomes Academy e beneficia de preços de lançamento exclusivos.</p>
+      <div class="cta-actions fade-in">
+        <a href="#planos" class="btn btn-gold">Ver Planos &rarr;</a>
+        <a href="#localizacao" class="btn btn-outline">Visitar o Clube</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="#" class="logo">POLOMES<span>.</span></a>
+          <p>A academia mais moderna de Torres Vedras. Uma mensalidade, acesso total. Move. Train. Live.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Modalidades</h4>
+          <ul>
+            <li><a href="#">Padel</a></li>
+            <li><a href="#">Bouldering</a></li>
+            <li><a href="#">Pilates</a></li>
+            <li><a href="#">Hyrox</a></li>
+            <li><a href="#">Fisioterapia</a></li>
+            <li><a href="#">Nutrição</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Academia</h4>
+          <ul>
+            <li><a href="#">Sobre Nós</a></li>
+            <li><a href="#">Como Funciona</a></li>
+            <li><a href="#">Planos</a></li>
+            <li><a href="#">Galeria</a></li>
+            <li><a href="#">Contacto</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="#">Termos & Condições</a></li>
+            <li><a href="#">Política de Privacidade</a></li>
+            <li><a href="#">Regulamento Interno</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 Polomes Academy. Todos os direitos reservados. Torres Vedras, Portugal.</p>
+        <div class="social-links">
+          <a href="#" class="social-link" title="Instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="#" class="social-link" title="Facebook">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="#" class="social-link" title="TikTok">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Navbar scroll effect
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Mobile menu
+    function toggleMenu() {
+      document.getElementById('mobileMenu').classList.toggle('open');
+    }
+
+    // Fade in on scroll
+    const fadeEls = document.querySelectorAll('.fade-in');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    fadeEls.forEach(el => observer.observe(el));
+
+    // Smooth nav links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', e => {
+        const target = document.querySelector(anchor.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
