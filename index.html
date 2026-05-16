@@ -141,8 +141,26 @@
       letter-spacing: -0.5px;
       text-decoration: none;
       color: var(--white);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      line-height: 1;
+      gap: 3px;
     }
-    .logo span { color: var(--gold); }
+    .logo-dot { color: var(--gold); }
+    .logo-sub {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 4.5px;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 50%, #a07830 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      align-self: stretch;
+      text-align: center;
+    }
     .nav-links {
       display: flex;
       align-items: center;
@@ -1231,7 +1249,7 @@
   <nav id="navbar">
     <div class="container">
       <div class="nav-inner">
-        <a href="#" class="logo">POLOMES<span>.</span></a>
+        <a href="#" class="logo"><span>POLOMES<span class="logo-dot">.</span></span><span class="logo-sub">Academy</span></a>
         <ul class="nav-links">
           <li><a href="#concept">Conceito</a></li>
           <li><a href="#modalidades">Modalidades</a></li>
@@ -1677,7 +1695,7 @@
     <div class="container">
       <div class="footer-top">
         <div class="footer-brand">
-          <a href="#" class="logo">POLOMES<span>.</span></a>
+          <a href="#" class="logo"><span>POLOMES<span class="logo-dot">.</span></span><span class="logo-sub">Academy</span></a>
           <p>A academia mais moderna de Torres Vedras. Uma mensalidade, acesso total. Move. Train. Live.</p>
         </div>
         <div class="footer-col">
